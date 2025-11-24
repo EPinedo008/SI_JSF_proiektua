@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<f:view>
+    <h:head>
+        <title>Create Ride</title>
+        <h:outputStylesheet library="css" name="style.css" />
+    </h:head>
+    <h:body>
+        <h:form id="form">
+
+            <h2>Create Ride</h2>
+            <p:messages id="msgs" showDetail="true" closable="true" />
+
+            <table style="width:400px;">
+                <tr>
+                    <td><h:outputLabel for="departCity" value="Depart City:" /></td>
+                    <td><p:inputText id="departCity" value="#{createRide.departCity}" required="true" /></td>
+                </tr>
+
+                <tr>
+                    <td><h:outputLabel for="arrivalCity" value="Arrival City:" /></td>
+                    <td><p:inputText id="arrivalCity" value="#{createRide.arrivalCity}" required="true" /></td>
+                </tr>
+
+                <tr>
+                    <td><h:outputLabel for="rideDate" value="Ride Date:" /></td>
+                    <td>
+                        <p:calendar id="data" value="#{createRide.data}" navigator="true" mode="popup">
+                            <p:ajax event="dateSelect" listener="#{createRide.onDateSelect}" />
+                        </p:calendar>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td><h:outputLabel for="numSeats" value="Number of Seats:" /></td>
+                    <td><p:inputNumber id="numSeats" value="#{createRide.numSeats}" required="true" minValue="1" /></td>
+                </tr>
+
+                <tr>
+                    <td><h:outputLabel for="price" value="Price (€):" /></td>
+                    <td><p:inputNumber id="price" value="#{createRide.price}" required="true" minValue="1" /></td>
+                </tr>
+
+            </table>
+
+            <br />
+
+            <h:commandButton value="Create Ride" action="#{createRide.createRide}" />
+
+
+            <h:commandButton value="Close" action="Menu?faces-redirect=true" style="margin-left:10px" immediate="true" />
+
+        </h:form>
+    </h:body>
+</f:view>
+</html>
