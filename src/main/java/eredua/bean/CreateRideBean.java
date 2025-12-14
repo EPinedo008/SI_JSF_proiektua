@@ -9,6 +9,7 @@ import java.util.List;
 import org.primefaces.event.SelectEvent;
 
 import businessLogic.BLFacade;
+import domain.Profile;
 import domain.Ride;
 import exceptions.RideAlreadyExistException;
 import exceptions.RideMustBeLaterThanTodayException;
@@ -16,9 +17,9 @@ import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import java.util.Date;
-import javax.persistence.Persistence;
 
 import org.primefaces.event.SelectEvent;
 
@@ -26,7 +27,7 @@ import businessLogic.BLFacade;
 import domain.Ride;
 import exceptions.RideAlreadyExistException;
 import exceptions.RideMustBeLaterThanTodayException;
-
+import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
@@ -34,7 +35,7 @@ import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Named;
 
 @Named("createRide")
-@ViewScoped
+@SessionScoped
 public class CreateRideBean implements Serializable {
 	private BLFacade blfacade;
     private String departCity;
@@ -44,11 +45,25 @@ public class CreateRideBean implements Serializable {
     private float price;
     private String email;
     private Ride ride;
+    @Inject
+    private UserBean userBean;
+    private Profile user;
+    
     public CreateRideBean() {
     	
 	}
     
-    
+    @PostConstruct
+	public void init() {
+		this.user = userBean.getUser();
+
+		if (this.user == null) {
+			System.out.println("¡Acceso no autorizado!");
+
+
+		}
+
+	}
     public BLFacade getBlfacade() {
 		return blfacade;
 	}
@@ -127,7 +142,8 @@ public class CreateRideBean implements Serializable {
 		}else {
 			try {
 				blfacade = FacadeBean.getBusinessLogic();
-				ride=blfacade.createRide(departCity, arrivalCity, data, numSeats, price, "driver1@gmail.com");
+				System.out.println(user.getUser());
+				ride=blfacade.createRide(departCity, arrivalCity, data, numSeats, price, user.getUser());
 				
 				System.out.println("Ridea" +ride);
 				

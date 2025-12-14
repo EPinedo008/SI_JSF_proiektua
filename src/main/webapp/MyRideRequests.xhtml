@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:view>
+    <h:head>
+        <title>Ride Requests</title>
+        <h:outputStylesheet library="css" name="style.css"/>
+    </h:head>
+
+    <h:body>
+        <h:form id="requestsForm">
+
+            <h2>Ride Requests</h2>
+           
+            <p:dataTable id="requestsTable"
+                         value="#{rideRequests.requests}" 
+                         var="req"
+                         emptyMessage="No requests found"
+                         selectionMode="single"
+                         selection="#{rideRequests.selectedRequest}"
+                         paginator="true" 
+                         rows="10"
+                         rowKey="#{req.id}">
+
+                <p:column headerText="Traveller">
+                    #{req.traveller.name}
+                </p:column>
+
+                <p:column headerText="From">
+                    #{req.fromRequested}
+                </p:column>
+
+                <p:column headerText="To">
+                    #{req.toRequested}
+                </p:column>
+
+                <p:column headerText="Seats">
+                    #{req.seats}
+                </p:column>
+
+                <p:column headerText="Date">
+                    #{req.bidaieguna}
+                </p:column>
+
+                <p:column headerText="Status">
+                    #{req.state}
+                </p:column>
+
+                <p:column headerText="Actions" rendered="#{userBean.type eq 'Driver'}">
+
+                    <p:commandButton value="Onartu"
+                                     action="#{rideRequests.acceptRequest(req)}"
+                                     update="requestsTable"
+                                     />
+
+                    <p:commandButton value="Deuseztatu"
+                                     action="#{rideRequests.denyRequest(req)}"
+                                     update="requestsTable"
+                                     /> </p:column>
+
+            </p:dataTable>
+
+            <div style="margin-top: 20px;">
+                <h:commandButton value="Back"
+                                 action="#{userBean.backButton}"
+                                 immediate="true"
+                                 styleClass="back-btn"/>
+            </div>
+
+        </h:form>
+    </h:body>
+</f:view>
+
+</html>

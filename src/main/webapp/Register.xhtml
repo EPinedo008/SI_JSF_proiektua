@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<f:view>
+    <h:head>
+        <title>Register User</title>
+        <h:outputStylesheet library="css" name="style.css" />
+    </h:head>
+    <h:body>
+        <h:form id="registerForm">
+
+            <h2>Register</h2>
+            <p:messages id="msgs" showDetail="true" closable="true" />
+
+            <table style="width:400px;">
+
+                <tr>
+                    <td><h:outputLabel for="user" value="Username:" /></td>
+                    <td><p:inputText id="user" value="#{register.user}" required="true" /></td>
+                </tr>
+
+                <tr>
+                    <td><h:outputLabel for="name" value="Name:" /></td>
+                    <td><p:inputText id="name" value="#{register.name}" required="true" /></td>
+                </tr>
+
+                <tr>
+                    <td><h:outputLabel for="surname" value="Surname:" /></td>
+                    <td><p:inputText id="surname" value="#{register.surname}" required="true" /></td>
+                </tr>
+
+                <tr>
+                    <td><h:outputLabel for="tlf" value="Phone:" /></td>
+                    <td><p:inputText id="tlf" value="#{register.tlf}" required="true" /></td>
+                </tr>
+
+                <tr>
+                    <td><h:outputLabel for="email" value="Email:" /></td>
+                    <td><p:inputText id="email" value="#{register.email}" required="true" /></td>
+                </tr>
+
+                <tr>
+                    <td><h:outputLabel for="password" value="Password:" /></td>
+                    <td><p:password id="password" value="#{register.password}" required="true" /></td>
+                </tr>
+
+                <tr>
+                    <td><h:outputLabel for="repeatPassword" value="Repeat Password:" /></td>
+                    <td><p:password id="repeatPassword" value="#{register.repeatPassword}" required="true" /></td>
+                </tr>
+
+                <tr>
+                    <td><h:outputLabel value="User Type:" /></td>
+                    <td>
+                        <p:selectOneRadio id="userType" value="#{register.type}">
+                            <f:selectItem itemLabel="Traveller" itemValue="Traveller" />
+                            <f:selectItem itemLabel="Driver" itemValue="Driver" />
+                        </p:selectOneRadio>
+                    </td>
+                </tr>
+
+            </table>
+
+            <br />
+
+            <h:commandButton value="Register" action="#{register.register}" />
+            <h:commandButton value="Back" action="Menu?faces-redirect=true" immediate="true" style="margin-left:10px" />
+
+        </h:form>
+    </h:body>
+</f:view>
+</html>

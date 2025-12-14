@@ -1,88 +1,96 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
 
 <f:view>
-    <h:head>
-        <title>Query rides</title>
-        <h:outputStylesheet library="css" name="style.css" />
-    </h:head>
+	<h:head>
+		<title>Query rides</title>
+		<h:outputStylesheet library="css" name="style.css" />
+	</h:head>
 
-    <h:body>
-        <h:form id="queryRidesForm" styleClass="form-container">
+	<h:body>
+		<h:form id="queryRidesForm" styleClass="form-container">
 
-            <h3>Query rides</h3>
+			<h3>Query rides</h3>
 
-            <table class="form-table">
-                <tr>
-                    <td><h3>From:</h3></td>
-                    <td>
-                        <h:selectOneMenu id="departCity" value="#{queryRides.departCity}" styleClass="select-menu">
-                            <f:selectItems value="#{queryRides.departCities}" />
-                            <f:ajax event="change" render="arrivalCity ridesTable" />
-                        </h:selectOneMenu>
-                    </td>
-                </tr>
+			<p:messages id="msgs" showDetail="true" closable="true" />
 
-                <tr>
-                    <td><h3>To:</h3></td>
-                    <td>
-                        <h:selectOneMenu id="arrivalCity" value="#{queryRides.arrivalCity}" styleClass="select-menu">
-                            <f:selectItems value="#{queryRides.arrivalCities}" />
-                            <f:ajax event="change" render="ridesTable" />
-                        </h:selectOneMenu>
-                    </td>
-                </tr>
+			<table class="form-table">
+				<tr>
+					<td><h3>From:</h3></td>
+					<td>
+						<h:selectOneMenu id="departCity" value="#{queryRides.departCity}" styleClass="select-menu">
+							<f:selectItems value="#{queryRides.departCities}" />
+							<f:ajax event="change" render="arrivalCity ridesTable" />
+						</h:selectOneMenu>
+					</td>
+				</tr>
+				<tr>
+					<td><h3>To:</h3></td>
+					<td>
+						<h:selectOneMenu id="arrivalCity" value="#{queryRides.arrivalCity}" styleClass="select-menu">
+							<f:selectItems value="#{queryRides.arrivalCities}" />
+							<f:ajax event="change" render="ridesTable" />
+						</h:selectOneMenu>
+					</td>
+				</tr>
+				<tr>
+					<td><h3>Date:</h3></td>
+					<td>
+						<p:calendar id="data" value="#{queryRides.data}" navigator="true" mode="popup" styleClass="calendar-input">
+							<p:ajax event="dateSelect" listener="#{queryRides.onDateSelect}" update="ridesTable" />
+						</p:calendar>
+					</td>
+				</tr>
+			</table>
 
-                <tr>
-                    <td><h3>Date:</h3></td>
-                    <td>
-                        <p:calendar id="data" value="#{queryRides.data}" navigator="true" mode="popup"
-                                    styleClass="calendar-input">
-                            <p:ajax event="dateSelect" listener="#{queryRides.onDateSelect}" update="ridesTable" />
-                        </p:calendar>
-                    </td>
-                </tr>
-            </table>
+			<p:dataTable id="ridesTable" value="#{queryRides.rides}" var="ride" selectionMode="single" 
+				selection="#{queryRides.selectedRide}" emptyMessage="Ez daude bidairik." rowKey="#{ride.rideNumber}" styleClass="rides-table">
 
-            <p:dataTable id="ridesTable" value="#{queryRides.rides}" var="ride" emptyMessage="No se encontraron viajes."
-                         styleClass="rides-table">
+				<p:column headerText="Depart">
+					<h:outputText value="#{ride.nondik}" />
+				</p:column>
 
-                <p:column headerText="Derpart">
-                    <h:outputText value="#{ride.from}" />
-                </p:column>
+				<p:column headerText="Arrival">
+					<h:outputText value="#{ride.nora}" />
+				</p:column>
 
-                <p:column headerText="Arrival">
-                    <h:outputText value="#{ride.to}" />
-                </p:column>
+				<p:column headerText="Date">
+					<h:outputText value="#{ride.date}" />
+				</p:column>
 
-                <p:column headerText="Date">
-                    <h:outputText value="#{ride.date}" />
-                </p:column>
+				<p:column headerText="Price (€)">
+					<h:outputText value="#{ride.price}" />
+				</p:column>
 
-                <p:column headerText="Price (€)">
-                    <h:outputText value="#{ride.price}" />
-                </p:column>
+				<p:column headerText="Seats">
+					<h:outputText value="#{ride.nPlaces}" />
+				</p:column>
 
-                <p:column headerText="Seats">
-                    <h:outputText value="#{ride.nPlaces}" />
-                </p:column>
+				<p:column headerText="Driver">
+					<h:outputText value="#{ride.driver.name}" />
+				</p:column>
 
-                <p:column headerText="Driver">
-                    <h:outputText value="#{ride.driver.name}" />
-                </p:column>
+			</p:dataTable>
 
-            </p:dataTable>
+			<h:panelGrid columns="2" style="margin-top:10px;" rendered="#{userBean.type eq 'Traveller'}">
+				<h:outputLabel value="Eserleku kopurua:" for="seats" />
+				<p:inputNumber id="seats" value="#{queryRides.seats}" minValue="1" maxValue="10" />
+			</h:panelGrid>
 
-            <p style="margin-top:15px;">
-                <h:commandButton value="Back" action="Menu?faces-redirect=true" immediate="true" styleClass="back-btn" />
-            </p>
+			<p:commandButton value="Erreserbatu" action="#{queryRides.erreserbatu}" update="ridesTable msgs"
+				rendered="#{userBean.type eq 'Traveller'}" styleClass="reserve-btn" />
 
-        </h:form>
-    </h:body>
+			<p style="margin-top: 15px;">
+				<p:commandButton value="Back" action="#{userBean.backButton}" immediate="true"
+                 process="@this" styleClass="back-btn" />
+			</p>
+
+		</h:form>
+	</h:body>
 </f:view>
 </html>

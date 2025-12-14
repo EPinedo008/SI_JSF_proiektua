@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<f:view>
+    <h:head>
+        <title>Login User</title>
+        <h:outputStylesheet library="css" name="style.css" />
+    </h:head>
+    <h:body>
+        <h:form id="loginForm">
+
+            <h2>Login</h2>
+            <p:messages id="msgs" showDetail="true" closable="true" />
+
+            <table style="width:300px;">
+
+                <tr>
+                    <td><h:outputLabel for="username" value="Username:" /></td>
+                    <td><p:inputText id="username" value="#{login.username}" required="true" /></td>
+                </tr>
+
+                <tr>
+                    <td><h:outputLabel for="password" value="Password:" /></td>
+                    <td><p:password id="password" value="#{login.password}" required="true" /></td>
+                </tr>
+
+            </table>
+
+            <br />
+
+            <h:commandButton value="Login" action="#{login.login}" />
+            <h:commandButton value="Back to Menu" action="Menu?faces-redirect=true" immediate="true" style="margin-left:10px" />
+            <h:commandButton value="Register" action="Register?faces-redirect=true" immediate="true" style="margin-left:10px" />
+
+        </h:form>
+    </h:body>
+</f:view>
+</html>

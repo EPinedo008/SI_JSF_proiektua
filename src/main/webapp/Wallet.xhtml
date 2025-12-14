@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<f:view>
+    <h:head>
+        <title>Wallet</title>
+        <h:outputStylesheet library="css" name="style.css"/>
+    </h:head>
+    <h:body>  
+        <h:form id="moneyForm" styleClass="form-container">
+
+            <h2>Wallet</h2>
+            <p:messages id="msgs" showDetail="true" closable="true"/>
+
+            <h:panelGrid columns="2" style="margin-top:15px;">
+                <h:outputLabel value="Dirua:"/>
+                <h:outputText value="#{userBean.wallet} €"/>
+
+                <h:outputLabel value="#{userBean.type eq 'Traveller' ? 'Sartzeko kantitatea:' : 'Ateratzeko kantitatea:'}"/>
+                <p:inputNumber id="amount" value="#{userBean.amount}" minValue="1" maxValue="10000"/>
+            </h:panelGrid>
+
+            <p:commandButton value="#{userBean.type eq 'Traveller' ? 'Sartu' : 'Atera'}"
+                             action="#{userBean.depositOrWithdraw}"
+                             update="moneyForm msgs"
+                             styleClass="action-btn"
+                             style="margin-top:15px"/>
+
+            <p style="margin-top: 20px;">
+              <p:commandButton value="Back"
+                 action="#{userBean.backButton}"
+                 immediate="true"
+                 process="@this"
+                 styleClass="back-btn"/>
+
+
+            </p>
+
+        </h:form>
+    </h:body>
+</f:view>
+</html>
